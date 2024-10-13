@@ -1,0 +1,31 @@
+name: Send Daily Cat Images
+
+on:
+  schedule:
+    - cron: '0 9 * * *' # Runs every day at 9 AM UTC
+  workflow_dispatch:
+
+jobs:
+  send_email:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Send Email with Cat Image
+        env:
+          EMAILJS_USER_ID: ${{ secrets.EMAILJS_USER_ID }}
+          EMAILJS_SERVICE_ID: ${{ secrets.EMAILJS_SERVICE_ID }}
+          EMAILJS_TEMPLATE_ID: ${{ secrets.EMAILJS_TEMPLATE_ID }}
+          EMAILJS_API_KEY: ${{ secrets.EMAILJS_API_KEY }}
+        run: |
+          curl -X POST "https://api.emailjs.com/api/v1.0/email/send" \
+          -H "Content-Type: application/json" \
+          -d '{
+                "service_id": "'"${{ secrets.EMAILJS_SERVICE_ID }}"'",
+                "template_id": "'"${{ secrets.EMAILJS_TEMPLATE_ID }}"'",
+                "user_id": "'"${{ secrets.EMAILJS_USER_ID }}"'",
+                "template_params": {
+                  "cat_image_url": "https://cataas.com/cat"
+                }
+              }'
