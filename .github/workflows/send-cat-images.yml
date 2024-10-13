@@ -2,7 +2,7 @@ name: Send Daily Cat Images
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Runs every day at 12AM UTC (7AM GMT+7)
+    - cron: "0 0 * * *"
   workflow_dispatch:
 
 jobs:
@@ -21,7 +21,10 @@ jobs:
           curl -X POST "https://api.emailjs.com/api/v1.0/email/send" \
           -H "Content-Type: application/json" \
           -d '{
-                "service_id": "service_uvala3e",
-                "template_id": "template_u2vu7lr",
-                "user_id": "FKkNNZcm0oVGEhYyb"
+                "service_id": "'"${{ env.EMAILJS_SERVICE_ID }}"'",
+                "template_id": "'"${{ env.EMAILJS_TEMPLATE_ID }}"'",
+                "user_id": "'"${{ env.EMAILJS_USER_ID }}"'",
+                "template_params": {
+                  "cat_image_url": "https://example.com/cat.jpg"
+                }
               }'
