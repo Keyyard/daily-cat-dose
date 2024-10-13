@@ -13,9 +13,7 @@
             event.preventDefault();
             const form = document.getElementById('subscription-form');
             const formData = new FormData(form);
-            emailjs.send('service_uvala3e', 'template_u2vu7lr', {
-                user_email: formData.get('user_email')
-            })
+            emailjs.sendForm('service_uvala3e', 'template_u2vu7lr', form)
                 .then(function(response) {
                     document.getElementById('error-message').style.display = 'none';
                     document.getElementById('success-message').style.display = 'block';
