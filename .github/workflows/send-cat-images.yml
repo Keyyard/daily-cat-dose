@@ -1,24 +1,41 @@
 name: Send Cat Image Email
 
-on: [push]
+on:
+  schedule:
+    - cron: '0 0 * * *'  # Runs every day 
+  workflow_dispatch:  # Allows manual triggering
 
 jobs:
   send_email:
     runs-on: ubuntu-latest
     steps:
-    - name: Send Email with Cat Image
+    - name: Fetch Contacts
+      id: fetch_contacts
+      env:
+        EMAILJS_USER_ID: "FKkNNZcm0oVGEhYyb"
+      run: |
+        contacts=$(curl -X GET "https://api.emailjs.com/api/v1.0/contacts" \
+        -H "Content-Type: application/json" \
+        -H "Authorization: Bearer ${{ env.EMAILJS_USER_ID }}")
+        echo "::set-output name=contacts::$contacts"
+
+    - name: Send Email to Contacts
       env:
         EMAILJS_USER_ID: "FKkNNZcm0oVGEhYyb"
         EMAILJS_SERVICE_ID: "service_uvala3e"
         EMAILJS_TEMPLATE_ID: "template_u2vu7lr"
       run: |
-        curl -X POST "https://api.emailjs.com/api/v1.0/email/send" \
-        -H "Content-Type: application/json" \
-        -d '{
-              "service_id": "'"${{ env.EMAILJS_SERVICE_ID }}"'",
-              "template_id": "'"${{ env.EMAILJS_TEMPLATE_ID }}"'",
-              "user_id": "'"${{ env.EMAILJS_USER_ID }}"'",
-              "template_params": {
-                "cat_image_url": "https://example.com/cat.jpg"
-              }
-            }'
+        contacts=${{ steps.fetch_contacts.outputs.contacts }}
+        for email in $(echo $contacts | jq -r '.contacts[].email'); do
+          curl -X POST "https://api.emailjs.com/api/v1.0/email/send" \
+          -H "Content-Type: application/json" \
+          -d '{
+                "service_id": "'"${{ env.EMAILJS_SERVICE_ID }}"'",
+                "template_id": "'"${{ env.EMAILJS_TEMPLATE_ID }}"'",
+                "user_id": "'"${{ env.EMAILJS_USER_ID }}"'",
+                "template_params": {
+                  "cat_image_url": "https://example.com/cat.jpg",
+                  "to_email": "'"$email"'"
+                }
+              }'
+        done
