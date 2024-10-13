@@ -8,12 +8,11 @@
     <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <script>
         (function(){
-            emailjs.init("FKkNNZcm0oVGEhYyb"); // Your Public Key (User ID)
-        })();
+            emailjs.init("FKkNNZcm0oVGEhYyb"); 
         
         function sendEmail(event) {
             event.preventDefault();
-            emailjs.sendForm('service_uvala3e', 'template_u2vu7lr', '#subscription-form') // Your Service ID and Template ID
+            emailjs.sendForm('service_uvala3e', 'template_u2vu7lr', '#subscription-form') 
                 .then(function(response) {
                     document.getElementById('error-message').style.display = 'none';
                     alert('Email successfully sent!');

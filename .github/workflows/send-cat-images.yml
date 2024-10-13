@@ -26,6 +26,7 @@ jobs:
                 "template_id": "'"${{ secrets.EMAILJS_TEMPLATE_ID }}"'",
                 "user_id": "'"${{ secrets.EMAILJS_USER_ID }}"'",
                 "template_params": {
+                  "to_name": "Subscriber",
                   "cat_image_url": "https://cataas.com/cat"
                 }
               }'
