@@ -35,7 +35,7 @@ jobs:
                 "user_id": "'"${{ env.EMAILJS_USER_ID }}"'",
                 "template_params": {
                   "cat_image_url": "https://example.com/cat.jpg",
-                  "to_email": "'"$email"'"
+                  "reply_to": "'"$email"'"
                 }
               }'
         done
