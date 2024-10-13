@@ -25,17 +25,3 @@ jobs:
         EMAILJS_SERVICE_ID: "service_uvala3e"
         EMAILJS_TEMPLATE_ID: "template_u2vu7lr"
       run: |
-        contacts=${{ steps.fetch_contacts.outputs.contacts }}
-        for email in $(echo $contacts | jq -r '.contacts[].email'); do
-          curl -X POST "https://api.emailjs.com/api/v1.0/email/send" \
-          -H "Content-Type: application/json" \
-          -d '{
-                "service_id": "'"${{ env.EMAILJS_SERVICE_ID }}"'",
-                "template_id": "'"${{ env.EMAILJS_TEMPLATE_ID }}"'",
-                "user_id": "'"${{ env.EMAILJS_USER_ID }}"'",
-                "template_params": {
-                  "cat_image_url": "https://example.com/cat.jpg",
-                  "reply_to": "'"$email"'"
-                }
-              }'
-        done
