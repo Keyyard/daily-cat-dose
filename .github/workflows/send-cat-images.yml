@@ -2,7 +2,7 @@ name: Send Daily Cat Images
 
 on:
   schedule:
-    - cron: '0 0 * * *' # Runs every day at 12 AM UTC (7 AM GMT+7)
+    - cron: '0 0 * * *' # Runs every day at 12AM UTC (7AM GMT+7)
   workflow_dispatch:
 
 jobs:
@@ -24,10 +24,5 @@ jobs:
           -d '{
                 "service_id": "'"${{ secrets.EMAILJS_SERVICE_ID }}"'",
                 "template_id": "'"${{ secrets.EMAILJS_TEMPLATE_ID }}"'",
-                "user_id": "'"${{ secrets.EMAILJS_USER_ID }}"'",
-                "accessToken": "'"${{ secrets.EMAILJS_API_KEY }}"'",
-                "template_params": {
-                  "cat_image_url": "https://cataas.com/cat",
-                  "reply_to": "tmhyt1@gmail.com"
-                }
+                "user_id": "'"${{ secrets.EMAILJS_USER_ID }}"'"
               }'

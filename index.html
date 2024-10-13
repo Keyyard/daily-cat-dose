@@ -3,38 +3,40 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Happy Cat Everyday</title>
+    <title>DAILY DOSE OF CATS</title>
     <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
     <script src="https://cdn.emailjs.com/dist/email.min.js"></script>
     <script>
-        (function(){
-            emailjs.init("FKkNNZcm0oVGEhYyb"); 
-        
+        emailjs.init("FKkNNZcm0oVGEhYyb");
+
         function sendEmail(event) {
             event.preventDefault();
-            emailjs.sendForm('service_uvala3e', 'template_u2vu7lr', '#subscription-form') 
+            const form = document.getElementById('subscription-form');
+            const formData = new FormData(form);
+            emailjs.sendForm('service_uvala3e', 'template_u2vu7lr', form)
                 .then(function(response) {
                     document.getElementById('error-message').style.display = 'none';
-                    alert('Email successfully sent!');
+                    document.getElementById('success-message').style.display = 'block';
+                    document.getElementById('success-message').innerText = 'Email successfully sent!';
                 }, function(error) {
                     document.getElementById('error-message').style.display = 'block';
                     document.getElementById('error-message').innerText = 'Failed to send email. Please try again.';
                 });
         }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('subscription-form').addEventListener('submit', sendEmail);
+        });
     </script>
 </head>
 <body class="bg-blue-50 text-gray-800">
     <div class="flex flex-col items-center justify-center p-4">
         <h1 class="text-5xl font-bold mt-4 text-[#ffa61d]">Happy Cat Everyday</h1>
-        <p class="text-xl mt-4 text-center">Welcome to your daily dose of adorable cat images!</p>
-        <form id="subscription-form" class="mt-8 flex items-center space-x-2" onsubmit="sendEmail(event)">
-            <input type="email" name="user_email" placeholder="Enter your email" required class="p-2 border border-gray-300 rounded-l w-64">
-            <button type="submit" class="flex items-center bg-blue-500 text-white px-4 py-2 rounded-r">
-                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M2.003 5.884L10 9.882l7.997-3.998A1 1 0 0017 5H3a1 1 0 00-.997.884zM10 12.118l-8-4V14a1 1 0 001 1h14a1 1 0 001-1V8.118l-8 4z" />
-                </svg>
-            </button>
+        <form id="subscription-form" class="mt-4">
+            <input type="email" name="user_email" placeholder="Enter your email" class="p-2 border border-gray-300 rounded">
+            <button type="submit" class="p-2 bg-[#ffa61d] text-white rounded">Subscribe</button>
         </form>
+        <div id="success-message" class="mt-4 text-green-500" style="display: none;"></div>
         <div id="error-message" class="mt-4 text-red-500" style="display: none;"></div>
     </div>
 </body>
